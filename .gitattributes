@@ -1,0 +1,18 @@
+* text=auto
+*.java whitespace=tabwidth=2,tab-in-indent text=auto diff=java eol=lf
+*.groovy whitespace=tabwidth=2,tab-in-indent text=auto diff=groovy eol=lf
+*.css whitespace=tabwidth=2,tab-in-indent text=auto diff=css eol=lf
+*.js whitespace=tabwidth=2,tab-in-indent text=auto eol=lf
+*.json whitespace=tabwidth=2,tab-in-indent text=auto eol=lf
+*.ts whitespace=tabwidth=2,tab-in-indent text=auto eol=lf
+*.jsx whitespace=tabwidth=2,tab-in-indent text=auto eol=lf
+*.tsx whitespace=tabwidth=2,tab-in-indent text=auto eol=lf
+*.yml whitespace=tabwidth=2,tab-in-indent text=auto eol=lf
+*.vm whitespace=tabwidth=2,tab-in-indent text=auto diff=html eol=lf
+*.ftl whitespace=tabwidth=2,tab-in-indent text=auto diff=html eol=lf
+*.sql whitespace=tabwidth=2,tab-in-indent text=auto diff=sql eol=lf
+*.sh whitespace=tabwidth=2,tab-in-indent text=auto eol=lf
+*.bat whitespace=tabwidth=2,tab-in-indent text=auto eol=crlf
+*.pdf -text
+*.jar filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
