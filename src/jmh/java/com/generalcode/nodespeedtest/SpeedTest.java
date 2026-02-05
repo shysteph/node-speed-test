@@ -11,7 +11,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(2)
 public class SpeedTest {
+  private Element element;
   public int iterateDumb(Element element) {
     NodeList children = element.getChildNodes();
     int count = 0;
@@ -60,41 +60,32 @@ public class SpeedTest {
   }
 
   @Benchmark
-  public void benchmarkDumb(BenchmarkState state, Blackhole blackhole) {
-    blackhole.consume(iterateDumb(state.element));
+  public void benchmarkDumb(Blackhole blackhole) {
+    blackhole.consume(iterateDumb(element));
   }
 
   @Benchmark
-  public void benchmarkSmart(BenchmarkState state, Blackhole blackhole) {
-    blackhole.consume(iterateSmart(state.element));
+  public void benchmarkSmart(Blackhole blackhole) {
+    blackhole.consume(iterateSmart(element));
   }
 
   @Benchmark
-  public void benchmarkNextSibling(BenchmarkState state, Blackhole blackhole) {
-    blackhole.consume(iterateNextSibling(state.element));
+  public void benchmarkNextSibling(Blackhole blackhole) {
+    blackhole.consume(iterateNextSibling(element));
   }
 
-  @State(Scope.Thread)
-  public static class BenchmarkState {
-    Element element;
-
-    @Setup
-    public void prepare() {
-      try {
-        // 1. Instantiate DocumentBuilderFactory
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-        // 2. Instantiate DocumentBuilder
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("bigxml.xml")) {
-          // 3. Parse the XML file into a Document object
-          Document doc = builder.parse(is);
-          element = doc.getDocumentElement();
-        }
-
-      } catch (ParserConfigurationException | SAXException | IOException e) {
-        e.printStackTrace();
+  @Setup
+  public void prepare() {
+    try {
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("bigxml.xml")) {
+        Document doc = builder.parse(is);
+        element = doc.getDocumentElement();
       }
+
+    } catch (ParserConfigurationException | SAXException | IOException e) {
+      e.printStackTrace();
     }
   }
 }
